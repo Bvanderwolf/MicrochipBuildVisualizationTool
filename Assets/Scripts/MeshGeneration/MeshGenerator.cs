@@ -6,13 +6,22 @@ namespace BWolf.MeshGeneration
     [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
     public abstract class MeshGenerator : MonoBehaviour
     {
-        private MeshFilter _filter;
-   
+        [SerializeField]
+        private bool _interactable;
+        
+        private readonly Lazy<MeshFilter> _filter;
+
+        protected MeshGenerator()
+        {
+            _filter = new Lazy<MeshFilter>(GetComponent<MeshFilter>);
+        }
+
         private void Awake()
         {
-            _filter = GetComponent<MeshFilter>();
+            if (_interactable)
+                gameObject.AddComponent<BoxCollider>();
         }
-   
+
         private void Start()
         {
             GenerateMesh();
@@ -22,9 +31,10 @@ namespace BWolf.MeshGeneration
 
         protected abstract int[] GetTriangles();
         
-        private void GenerateMesh()
+        [ContextMenu("Generate")]
+        public void GenerateMesh()
         {
-            Mesh mesh = _filter.mesh;
+            Mesh mesh = GetMesh();
             Vector3[] vertices = GetVertices();
             int[] triangles = GetTriangles();
          
@@ -33,6 +43,15 @@ namespace BWolf.MeshGeneration
             mesh.triangles = triangles;
             mesh.Optimize();
             mesh.RecalculateNormals();
+        }
+
+        private Mesh GetMesh()
+        {
+            MeshFilter filter = _filter.Value;
+            if (Application.isPlaying)
+                return filter.mesh;
+
+            return filter.sharedMesh ?? (filter.sharedMesh = new Mesh());
         }
     }
 }

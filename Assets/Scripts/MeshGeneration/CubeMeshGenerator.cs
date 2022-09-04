@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace BWolf.MeshGeneration
@@ -5,16 +6,19 @@ namespace BWolf.MeshGeneration
    [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
    public class CubeMeshGenerator : MeshGenerator
    {
+      [SerializeField]
+      private Vector3 _size = Vector3.one;
+
       protected override Vector3[] GetVertices() => new Vector3[]
       {
          new Vector3(0, 0, 0),
-         new Vector3(1, 0, 0),
-         new Vector3(1, 1, 0),
-         new Vector3(0, 1, 0),
-         new Vector3(0, 1, 1),
-         new Vector3(1, 1, 1),
-         new Vector3(1, 0, 1),
-         new Vector3(0, 0, 1)
+         new Vector3(_size.x, 0, 0),
+         new Vector3(_size.x, _size.y, 0),
+         new Vector3(0, _size.y, 0),
+         new Vector3(0, _size.y, _size.z),
+         new Vector3(_size.x, _size.y, _size.z),
+         new Vector3(_size.x, 0, _size.z),
+         new Vector3(0, 0, _size.z)
       };
       
       /// <summary>
