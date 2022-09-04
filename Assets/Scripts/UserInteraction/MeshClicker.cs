@@ -5,19 +5,10 @@ namespace BWolf.UserInteraction
     public class MeshClicker : MonoBehaviour
     {
         private Camera _camera;
-        
-        [RuntimeInitializeOnLoadMethod]
-        private static void OnLoad()
-        {
-            GameObject gameObject = new GameObject("~MeshClicker");
-            gameObject.AddComponent<MeshClicker>();
-            
-            DontDestroyOnLoad(gameObject);
-        }
 
         private void Awake()
         {
-            _camera = Camera.main;
+            _camera = GetComponentInParent<Canvas>().worldCamera ?? Camera.main;
         }
 
         private void Update()
