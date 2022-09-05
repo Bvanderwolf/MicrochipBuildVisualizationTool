@@ -20,13 +20,13 @@ namespace BWolf.MeshGeneration
         /// A reference to the mesh filter wrapped inside the lazy class.
         /// This makes it so it also works when it is used inside the editor.
         /// </summary>
-        private readonly Lazy<MeshFilter> _filter;
+        protected readonly Lazy<MeshFilter> _filter;
         
         /// <summary>
         /// A reference to the mesh filter wrapped inside the lazy class.
         /// This makes it so it also works when it is used inside the editor.
         /// </summary>
-        private readonly Lazy<MeshRenderer> _renderer;
+        protected readonly Lazy<MeshRenderer> _renderer;
 
         /// <summary>
         /// Sets up the lazy filter class with a reference to the
@@ -42,7 +42,7 @@ namespace BWolf.MeshGeneration
         /// Adds a box collider component to the game object
         /// if the generator is set to be interactable.
         /// </summary>
-        private void Awake()
+        protected virtual void Awake()
         {
             if (_interactable)
                 gameObject.AddComponent<BoxCollider>();
@@ -76,7 +76,7 @@ namespace BWolf.MeshGeneration
 
             _interactable = value;
         }
-        
+
         /// <summary>
         /// Generates the mesh using the abstract functions.
         /// </summary>
@@ -95,14 +95,18 @@ namespace BWolf.MeshGeneration
 
             if (material != null)
                 _renderer.Value.material = material;
+            if (Application.isPlaying)
+                OnGeneratedMesh();
         }
+        
+        protected virtual void OnGeneratedMesh() {}
 
         /// <summary>
         /// Returns the mesh for generation, accounting for whether the
         /// application is in editor mode or play mode.
         /// </summary>
         /// <returns></returns>
-        private Mesh GetMesh()
+        protected Mesh GetMesh()
         {
             MeshFilter filter = _filter.Value;
             if (Application.isPlaying)

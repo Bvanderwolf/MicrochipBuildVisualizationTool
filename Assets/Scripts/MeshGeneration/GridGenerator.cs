@@ -4,6 +4,12 @@ namespace BWolf.MeshGeneration
 {
     public class GridGenerator : MeshGeneratorBase
     {
+        /// <summary>
+        /// The color of the planes when hovered over.
+        /// </summary>
+        [SerializeField]
+        private Color _hoverColor;
+
         [SerializeField]
         private Material _material;
         
@@ -51,6 +57,7 @@ namespace BWolf.MeshGeneration
                     
                     PlaneMeshGenerator generator = child.AddComponent<PlaneMeshGenerator>();
                     generator.Size = _planeSize;
+                    generator.HoveredColor = _hoverColor;
                     generator.GenerateMesh(_material);
                     generator.SetInteractable(true);
                 }
