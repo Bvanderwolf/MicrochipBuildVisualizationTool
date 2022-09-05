@@ -29,18 +29,25 @@ namespace BWolf.MeshGeneration
             set => _size = value;
         }
 
+        /// <summary>
+        /// The color of the mesh when hovered over.
+        /// </summary>
         public Color HoveredColor
         {
             get => _hoverColor;
             set => _hoverColor = value;
         }
 
+        /// <summary>
+        /// The initial color of the generated mesh.
+        /// </summary>
         private Color _color;
 
-        private void Start()
-        {
-            OnGeneratedMesh();
-        }
+        /// <summary>
+        /// Makes sure operations after mesh generation are called
+        /// as a mesh might already be generated in the editor.
+        /// </summary>
+        private void Start() =>  OnGeneratedMesh();
 
         /// <summary>
         /// The vertices for the plane.
@@ -64,18 +71,30 @@ namespace BWolf.MeshGeneration
             1, 3, 2
         };
 
+        /// <summary>
+        /// Stores the initial color of the material used for the mesh.
+        /// </summary>
         protected override void OnGeneratedMesh()
         {
             _color = _renderer.Value.material.color;
         }
 
+        /// <summary>
+        /// Whether the mesh is being hovered over by the user.
+        /// </summary>
         public bool IsHovered => _renderer.Value.material.color == _hoverColor;
         
+        /// <summary>
+        /// Sets the color of the mesh to the hovered color.
+        /// </summary>
         public void OnHoverStart()
         {
             _renderer.Value.material.color = _hoverColor;
         }
-
+        
+        /// <summary>
+        /// Resets the color of the mesh to the initial color.
+        /// </summary>
         public void OnHoverEnd()
         {
             _renderer.Value.material.color = _color;
