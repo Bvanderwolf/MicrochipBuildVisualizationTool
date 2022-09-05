@@ -1,14 +1,22 @@
-using System;
 using UnityEngine;
 
 namespace BWolf.MeshGeneration
 {
-   [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
+   /// <summary>
+   /// Generates the mesh for a cube.
+   /// </summary>
    public class CubeMeshGenerator : MeshGenerator
    {
+      /// <summary>
+      /// The size of the cube where x=width, y=height, z=length.
+      /// </summary>
       [SerializeField]
       private Vector3 _size = Vector3.one;
 
+      /// <summary>
+      /// Returns the vertices for a cube.
+      /// </summary>
+      /// <returns>The vertices for a cube.</returns>
       protected override Vector3[] GetVertices() => new Vector3[]
       {
          new Vector3(0, 0, 0),
@@ -22,9 +30,9 @@ namespace BWolf.MeshGeneration
       };
       
       /// <summary>
-      /// Returns triangles in order: front, top, right, left, back, bottom
+      /// Returns triangles for the cube in order: front, top, right, left, back, bottom
       /// </summary>
-      /// <returns></returns>
+      /// <returns>The triangles for the cube.</returns>
       protected override int[] GetTriangles() => new int[]
       {
          0, 2, 1,
