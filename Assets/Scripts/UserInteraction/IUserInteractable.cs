@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace BWolf.UserInteraction
 {
     /// <summary>
@@ -11,11 +7,6 @@ namespace BWolf.UserInteraction
     public interface IUserInteractable
     {
         /// <summary>
-        /// Whether the mesh is being hovered over.
-        /// </summary>
-        bool IsHovered { get; }
-
-        /// <summary>
         /// Invoked when the hovering of the mesh has started.
         /// </summary>
         void OnHoverStart();
@@ -24,6 +15,16 @@ namespace BWolf.UserInteraction
         /// Invoked when the hovering of the mesh has stopped.
         /// </summary>
         void OnHoverEnd();
+
+        /// <summary>
+        /// Invoked when selected.
+        /// </summary>
+        void OnSelect();
+
+        /// <summary>
+        /// Invoked when deselected.
+        /// </summary>
+        void OnDeselect();
 
         /// <summary>
         /// Invoked when the mesh has been clicked.

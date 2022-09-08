@@ -14,6 +14,12 @@ namespace BWolf.MeshGeneration
         private Color _hoverColor;
 
         /// <summary>
+        /// The color of the planes when selected.
+        /// </summary>
+        [SerializeField]
+        private Color _selectedColor;
+        
+        /// <summary>
         /// The material used for the planes in the grid.
         /// </summary>
         [SerializeField]
@@ -77,6 +83,7 @@ namespace BWolf.MeshGeneration
                     PlaneMeshGenerator generator = child.AddComponent<PlaneMeshGenerator>();
                     generator.Size = _planeSize;
                     generator.HoveredColor = _hoverColor;
+                    generator.SelectedColor = _selectedColor;
                     generator.GenerateMesh(_material);
                     generator.SetInteractable(true);
                 }

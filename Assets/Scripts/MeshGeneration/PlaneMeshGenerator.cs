@@ -6,6 +6,7 @@ namespace BWolf.MeshGeneration
     /// <summary>
     /// Generates a plane mesh.
     /// </summary>
+    [RequireComponent(typeof(Rigidbody))]
     public class PlaneMeshGenerator : MeshGenerator, IUserInteractable
     {
         /// <summary>
@@ -13,6 +14,12 @@ namespace BWolf.MeshGeneration
         /// </summary>
         [SerializeField]
         private Color _hoverColor;
+
+        /// <summary>
+        /// The color of the plane when selected.
+        /// </summary>
+        [SerializeField]
+        private Color _selectedColor;
         
         /// <summary>
         /// The size of the plane, where x=width, y=length.
@@ -39,9 +46,27 @@ namespace BWolf.MeshGeneration
         }
 
         /// <summary>
+        /// The color of the mesh when selected.
+        /// </summary>
+        public Color SelectedColor
+        {
+            get => _selectedColor;
+            set => _selectedColor = value;
+        }
+
+        /// <summary>
         /// The initial color of the generated mesh.
         /// </summary>
         private Color _color;
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            Rigidbody body = GetComponent<Rigidbody>();
+            body.useGravity = false;
+            body.isKinematic = true;
+        }
 
         /// <summary>
         /// Makes sure operations after mesh generation are called
@@ -78,11 +103,6 @@ namespace BWolf.MeshGeneration
         {
             _color = _renderer.Value.material.color;
         }
-
-        /// <summary>
-        /// Whether the mesh is being hovered over by the user.
-        /// </summary>
-        public bool IsHovered => _renderer.Value.material.color == _hoverColor;
         
         /// <summary>
         /// Sets the color of the mesh to the hovered color.
@@ -97,12 +117,27 @@ namespace BWolf.MeshGeneration
         /// </summary>
         public void OnHoverEnd()
         {
-            _renderer.Value.material.color = _color;
+            ResetColor();
+        }
+
+        public void OnSelect()
+        {
+            _renderer.Value.material.color = _selectedColor;
+        }
+
+        public void OnDeselect()
+        {
+            ResetColor();
         }
 
         public void OnClick()
         {
             Debug.Log($"{name} was clicked.");
+        }
+
+        private void ResetColor()
+        {
+            _renderer.Value.material.color = _color;
         }
     }
 }
