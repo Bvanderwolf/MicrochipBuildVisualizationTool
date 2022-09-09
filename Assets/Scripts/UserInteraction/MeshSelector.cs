@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BWolf.UserInteraction.Utility;
 using UnityEngine;
+// ReSharper disable All
 
 namespace BWolf.UserInteraction
 {
@@ -46,6 +47,7 @@ namespace BWolf.UserInteraction
         /// The key that, when pressed, determines whether to reset the
         /// current selection before selecting new game objects.
         /// </summary>
+        [Header("Settings")]
         [SerializeField]
         private KeyCode _inclusiveSelectKey = KeyCode.LeftShift;
         
@@ -77,7 +79,7 @@ namespace BWolf.UserInteraction
         /// <summary>
         /// The current selection of game objects.
         /// </summary>
-        private readonly List<GameObject> _currentSelection = new List<GameObject>();
+        private List<GameObject> _currentSelection = new List<GameObject>();
 
         /// <summary>
         /// The initial mouse position when left clicked on screen by the user.
@@ -101,6 +103,7 @@ namespace BWolf.UserInteraction
         {
             _meshCaster = new SelectionMeshCaster(Camera.main);
             _meshCaster.Selected += OnSelectionChanged;
+            _meshCaster.condition = selected => selected.GetComponent<IUserInteractable>() != null;
         }
 
         /// <summary>
@@ -165,7 +168,8 @@ namespace BWolf.UserInteraction
             }
 
             GameObject clickedGameObject = hitInfo.transform.gameObject;
-            int selectionCount = _currentSelection.Count;
+            GameObject previousGameObject = _currentSelection.FirstOrDefault();
+            int previousCount = _currentSelection.Count;
             
             // Fire event for subscribers.
             Clicked?.Invoke(clickedGameObject);
@@ -186,7 +190,7 @@ namespace BWolf.UserInteraction
             }
 
             // If the selection has changed after all this, invoke the corresponding event.
-            if (selectionCount != _currentSelection.Count)
+            if (previousCount != _currentSelection.Count || previousGameObject != clickedGameObject)
                 SelectionChanged?.Invoke();
         }
 

@@ -6,23 +6,27 @@ namespace BWolf.UserInteraction.Utility
 {
     public static class Vector3Extensions
     {
-        public static Vector3 Average(this Vector3[] vectors)
+        public static Vector3 Average(this IEnumerable<Vector3> vectors)
         {
             Vector3 average = Vector3.zero;
+            int count = 0;
 
-            for (int i = 0; i < vectors.Length; i++)
-                average += vectors[i];
+            foreach (Vector3 vector3 in vectors)
+            {
+                average += vector3;
+                count++;
+            }
 
-            return average / vectors.Length;
+            return average / count;
         }
         
-        public static float ShortestDistance(this Vector3 position, Vector3[] positions)
+        public static float ShortestDistance(this Vector3 position, IEnumerable<Vector3> positions)
         {
             float smallestSqrMagnitude = float.MaxValue;
 
-            for (int i = 0; i < positions.Length; i++)
+            foreach (Vector3 p in positions)
             {
-                float sqrMagnitude = (positions[i] - position).sqrMagnitude;
+                float sqrMagnitude = (p - position).sqrMagnitude;
                 if (sqrMagnitude < smallestSqrMagnitude)
                     smallestSqrMagnitude = sqrMagnitude;
             }
@@ -30,23 +34,27 @@ namespace BWolf.UserInteraction.Utility
             return Mathf.Sqrt(smallestSqrMagnitude);
         }
         
-        public static Vector2 Average(this Vector2[] vectors)
+        public static Vector2 Average(this IEnumerable<Vector2> vectors)
         {
-            Vector2 average = Vector3.zero;
+            Vector2 average = Vector2.zero;
+            int count = 0;
 
-            for (int i = 0; i < vectors.Length; i++)
-                average += vectors[i];
+            foreach (Vector2 vector3 in vectors)
+            {
+                average += vector3;
+                count++;
+            }
 
-            return average / vectors.Length;
+            return average / count;
         }
         
-        public static float ShortestDistance(this Vector2 position, Vector2[] positions)
+        public static float ShortestDistance(this Vector2 position, IEnumerable<Vector2> positions)
         {
             float smallestSqrMagnitude = float.MaxValue;
 
-            for (int i = 0; i < positions.Length; i++)
+            foreach (Vector2 p in positions)
             {
-                float sqrMagnitude = (positions[i] - position).sqrMagnitude;
+                float sqrMagnitude = (p - position).sqrMagnitude;
                 if (sqrMagnitude < smallestSqrMagnitude)
                     smallestSqrMagnitude = sqrMagnitude;
             }
