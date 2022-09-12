@@ -23,7 +23,7 @@ public class TargetSelector : MonoBehaviour
             RaycastHit hit;
             if(Physics.Raycast(ray, out hit))
             {
-                if (hit.transform.CompareTag(targetsTag))
+                if (hit.transform.tag == targetsTag)
                     cam.SetTarget(hit.transform);
                 else
                     cam.ResetTarget();

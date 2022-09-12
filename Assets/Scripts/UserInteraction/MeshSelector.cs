@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using BWolf.UserInteraction.Utility;
 using UnityEngine;
-// ReSharper disable All
 
 namespace BWolf.UserInteraction
 {
@@ -37,6 +36,11 @@ namespace BWolf.UserInteraction
         /// The currently selected game objects.
         /// </summary>
         public GameObject[] Selection => _currentSelection.ToArray();
+
+        /// <summary>
+        /// The amount of selected objects.
+        /// </summary>
+        public int SelectionCount => _currentSelection.Count;
 
         /// <summary>
         /// Whether a drag selection is currently in progress.

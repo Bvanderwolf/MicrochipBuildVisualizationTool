@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using BWolf.UserInteraction.Utility;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace BWolf.UserInteraction
@@ -11,12 +13,27 @@ namespace BWolf.UserInteraction
     {
         [SerializeField]
         private MeshSelector _selector;
+
+        [SerializeField]
+        private SelectionInfoProvider _selectionInfo;
+
+        [SerializeField]
+        private Transform _buttonParent;
         
         [SerializeField]
         private Vector3 _offset = new Vector3(0, 1, 0);
         
         [SerializeField]
         private Button _buttonPrefab;
+
+        private readonly Dictionary<string, OptionButton> _options = new Dictionary<string, OptionButton>();
+
+        private struct OptionButton
+        {
+            public Button button;
+
+            public Func<bool> condition;
+        }
 
         private void Awake()
         {
@@ -25,7 +42,25 @@ namespace BWolf.UserInteraction
 
         private void Start()
         {
+            AddOption("Depose", _selectionInfo.SelectionIsDepositable);
+            AddOption("Etch", _selectionInfo.SelectionIsEtchable);
             SetActive(false);
+        }
+
+        public void AddOption(string optionName, Func<bool> condition = null)
+        {
+            Button button = Instantiate(_buttonPrefab, _buttonParent);
+            TMP_Text textRenderer = button.GetComponentInChildren<TMP_Text>();
+            textRenderer.text = optionName;
+            
+            _options.Add(optionName, new OptionButton{ button = button, condition = condition });
+        }
+
+        public void SetOnClick(string optionName, UnityAction action)
+        {
+            Button button = _options[optionName].button;
+            button.onClick.RemoveAllListeners();
+            button.onClick.AddListener(action);
         }
 
         private void OnSelectionChanged()
@@ -39,7 +74,7 @@ namespace BWolf.UserInteraction
 
                 transform.position = displayPosition;
             }
-            Debug.Log(selection.Length);
+
             // Determine whether we want the canvas to be active based
             // on whether any object has been selected.
             SetActive(selectedAnyObject);
@@ -48,6 +83,15 @@ namespace BWolf.UserInteraction
         private void SetActive(bool value)
         {
             gameObject.SetActive(value);
+            
+            if (value)
+            {
+                foreach (OptionButton option in _options.Values)
+                {
+                    bool canBeInteractable = option.condition == null || option.condition.Invoke();
+                    option.button.interactable = canBeInteractable;
+                }
+            }
         }
     }
 }
