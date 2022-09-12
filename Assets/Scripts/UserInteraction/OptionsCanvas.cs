@@ -23,16 +23,31 @@ namespace BWolf.UserInteraction
             _selector.SelectionChanged += OnSelectionChanged;
         }
 
+        private void Start()
+        {
+            SetActive(false);
+        }
+
         private void OnSelectionChanged()
         {
             GameObject[] selection = _selector.Selection;
-            if (selection.Length == 0)
-                return;
-            
-            Vector3 averagePosition = selection.Select(selected => selected.transform.position).Average();
-            Vector3 displayPosition = averagePosition + _offset;
+            bool selectedAnyObject = selection.Length != 0;
+            if (selectedAnyObject)
+            {
+                Vector3 averagePosition = selection.Select(selected => selected.transform.position).Average();
+                Vector3 displayPosition = averagePosition + _offset;
 
-            transform.position = displayPosition;
+                transform.position = displayPosition;
+            }
+            Debug.Log(selection.Length);
+            // Determine whether we want the canvas to be active based
+            // on whether any object has been selected.
+            SetActive(selectedAnyObject);
+        }
+
+        private void SetActive(bool value)
+        {
+            gameObject.SetActive(value);
         }
     }
 }

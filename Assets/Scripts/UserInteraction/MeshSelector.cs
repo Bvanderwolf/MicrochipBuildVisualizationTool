@@ -161,16 +161,19 @@ namespace BWolf.UserInteraction
         private void OnClick(Vector3 mousePosition)
         {
             Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+            int previousCount = _currentSelection.Count;
+            
             if (!Physics.Raycast(ray, out RaycastHit hitInfo) || !IsSelectableCollider(hitInfo.collider))
             {
                 ClearSelection();
+                if (previousCount != _currentSelection.Count)
+                    SelectionChanged?.Invoke();
                 return;
             }
 
             GameObject clickedGameObject = hitInfo.transform.gameObject;
             GameObject previousGameObject = _currentSelection.FirstOrDefault();
-            int previousCount = _currentSelection.Count;
-            
+
             // Fire event for subscribers.
             Clicked?.Invoke(clickedGameObject);
             
