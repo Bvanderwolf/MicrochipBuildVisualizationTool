@@ -80,12 +80,14 @@ namespace BWolf.MeshGeneration
         /// <returns>The vertices.</returns>
         protected override Vector3[] GetVertices() => new Vector3[]
         {
-            new Vector3(0, 0, 0),
-            new Vector3(_size.x, 0, 0),
-            new Vector3(_size.x, 0, _size.y),
-            new Vector3(0, 0, _size.y)
+            new Vector3(-(_size.x * 0.5f), 0, -(_size.y * 0.5f)),
+            new Vector3(_size.x * 0.5f, 0, -(_size.y * 0.5f)),
+            new Vector3(_size.x * 0.5f, 0, _size.y * 0.5f),
+            new Vector3(-(_size.x * 0.5f), 0, _size.y * 0.5f)
         };
 
+        // 000, sizeX00, sizeX0sizeY, 00sizeY
+        
         /// <summary>
         /// The triangles for the plane.
         /// </summary>
