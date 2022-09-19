@@ -11,6 +11,10 @@ namespace BWolf.UserInteraction
 {
     public class OptionsCanvas : MonoBehaviour
     {
+        public const string DEPOSE = "Depose";
+
+        public const string ETCH = "Etch";
+        
         [SerializeField]
         private MeshSelector _selector;
 
@@ -38,12 +42,13 @@ namespace BWolf.UserInteraction
         private void Awake()
         {
             _selector.SelectionChanged += OnSelectionChanged;
+            
+            AddOption(DEPOSE, _selectionInfo.SelectionIsDepositable);
+            AddOption(ETCH, _selectionInfo.SelectionIsEtchable);
         }
 
         private void Start()
         {
-            AddOption("Depose", _selectionInfo.SelectionIsDepositable);
-            AddOption("Etch", _selectionInfo.SelectionIsEtchable);
             SetActive(false);
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BWolf.UserInteraction.Utility;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace BWolf.UserInteraction
 {
@@ -164,9 +165,12 @@ namespace BWolf.UserInteraction
         /// <param name="mousePosition">The mouse position on screen.</param>
         private void OnClick(Vector3 mousePosition)
         {
+            if (IsSelectingOptionsCanvas())
+                return;
+            
             Ray ray = Camera.main.ScreenPointToRay(mousePosition);
             int previousCount = _currentSelection.Count;
-            
+
             if (!Physics.Raycast(ray, out RaycastHit hitInfo) || !IsSelectableCollider(hitInfo.collider))
             {
                 ClearSelection();
@@ -277,5 +281,15 @@ namespace BWolf.UserInteraction
 
         private bool IsSelectableCollider(Collider colliderToCheck) =>
             _meshCaster.condition == null || _meshCaster.condition.Invoke(colliderToCheck);
+
+        private bool IsSelectingOptionsCanvas()
+        {
+            GameObject selectedUIObject = EventSystem.current.currentSelectedGameObject;
+            
+            if (selectedUIObject == null)
+                return false;
+
+            return selectedUIObject.GetComponentInParent<OptionsCanvas>() != null;
+        }
     }
 }

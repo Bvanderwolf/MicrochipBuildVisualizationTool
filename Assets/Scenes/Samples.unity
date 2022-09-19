@@ -565,6 +565,7 @@ GameObject:
   - component: {fileID: 285299110}
   - component: {fileID: 285299109}
   - component: {fileID: 285299111}
+  - component: {fileID: 285299112}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -657,6 +658,21 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &285299112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285299107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &367461045
 GameObject:
   m_ObjectHideFlags: 0
@@ -981,6 +997,7 @@ GameObject:
   - component: {fileID: 510288014}
   - component: {fileID: 510288013}
   - component: {fileID: 510288017}
+  - component: {fileID: 510288018}
   m_Layer: 5
   m_Name: OptionsCanvas
   m_TagString: Untagged
@@ -1087,6 +1104,20 @@ MonoBehaviour:
   _buttonParent: {fileID: 285299108}
   _offset: {x: 0, y: 1.25, z: 0}
   _buttonPrefab: {fileID: 7684908043206302967, guid: bad5fc8a9b90cf642b4d47409f49043b, type: 3}
+--- !u!114 &510288018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 510288012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f20746b21c61e84b97614cd3b339254, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _target: {fileID: 1195599264}
+  _mirror: 1
 --- !u!1 &694275541
 GameObject:
   m_ObjectHideFlags: 0
@@ -2615,7 +2646,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11455738, guid: 407bd5cbe8c43334bb1b25c0f3826974, type: 3}
       propertyPath: lastTab
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 11455738, guid: 407bd5cbe8c43334bb1b25c0f3826974, type: 3}
       propertyPath: maxHeight
@@ -2623,10 +2654,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11455738, guid: 407bd5cbe8c43334bb1b25c0f3826974, type: 3}
       propertyPath: minHeight
-      value: 15
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11455738, guid: 407bd5cbe8c43334bb1b25c0f3826974, type: 3}
+      propertyPath: scrollWheelZoomingSensitivity
+      value: 35
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 407bd5cbe8c43334bb1b25c0f3826974, type: 3}
+--- !u!4 &1195599264 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 459968, guid: 407bd5cbe8c43334bb1b25c0f3826974, type: 3}
+  m_PrefabInstance: {fileID: 1195599263}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1319141977
 GameObject:
   m_ObjectHideFlags: 0
@@ -2637,6 +2677,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1319141978}
   - component: {fileID: 1319141979}
+  - component: {fileID: 1319141980}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -2685,6 +2726,20 @@ MonoBehaviour:
   _material: {fileID: 2100000, guid: a1b7cab99d8356f4ba14329ef6981eb5, type: 2}
   _gridSize: {x: 3, y: 3}
   _planeSize: {x: 1, y: 1}
+--- !u!114 &1319141980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1319141977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 690b33da02e3435428f2f6b776447a63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _options: {fileID: 510288017}
+  _selector: {fileID: 856534026}
 --- !u!43 &1340229167
 Mesh:
   m_ObjectHideFlags: 0

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BWolf.MeshGeneration
+namespace BWolf.Meshes.Generation
 {
    /// <summary>
    /// Generates the mesh for a cube.

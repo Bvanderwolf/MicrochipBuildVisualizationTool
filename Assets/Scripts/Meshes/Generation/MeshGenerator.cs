@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace BWolf.MeshGeneration
+namespace BWolf.Meshes.Generation
 {
     /// <summary>
     /// Represents a mono behaviour that can generate a mesh.
@@ -83,7 +83,7 @@ namespace BWolf.MeshGeneration
         /// <param name="material">The material to set for the mesh.</param>
         public override void GenerateMesh(Material material = null)
         {
-            Mesh mesh = GetMesh();
+            UnityEngine.Mesh mesh = GetMesh();
             Vector3[] vertices = GetVertices();
             int[] triangles = GetTriangles();
          
@@ -106,14 +106,14 @@ namespace BWolf.MeshGeneration
         /// application is in editor mode or play mode.
         /// </summary>
         /// <returns></returns>
-        protected Mesh GetMesh()
+        protected UnityEngine.Mesh GetMesh()
         {
             MeshFilter filter = _filter.Value;
             if (Application.isPlaying)
                 return filter.mesh;
 
             // Returns the shared mesh if its not null, otherwise the shared mesh with a newly assigned value.
-            return filter.sharedMesh ?? (filter.sharedMesh = new Mesh());
+            return filter.sharedMesh ?? (filter.sharedMesh = new UnityEngine.Mesh());
         }
     }
 }

@@ -1,7 +1,7 @@
 using BWolf.UserInteraction;
 using UnityEngine;
 
-namespace BWolf.MeshGeneration
+namespace BWolf.Meshes.Generation
 {
     /// <summary>
     /// Generates a plane mesh.

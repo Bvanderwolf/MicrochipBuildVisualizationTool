@@ -1,6 +1,8 @@
+using System;
+using BWolf.Meshes.Manipulation;
 using UnityEngine;
 
-namespace BWolf.MeshGeneration
+namespace BWolf.Meshes.Generation
 {
     /// <summary>
     /// Manages a grid of plane generators.
@@ -36,7 +38,7 @@ namespace BWolf.MeshGeneration
         /// </summary>
         [SerializeField]
         private Vector2 _planeSize = new Vector2(1, 1);
-        
+
         /// <summary>
         /// Ensures the sizes don't fall under an impossible value.
         /// </summary>
@@ -76,16 +78,18 @@ namespace BWolf.MeshGeneration
                     localPosition.x = (x * _planeSize.x);
                     localPosition.z = (z * _planeSize.y);
                     
-                    GameObject child = new GameObject($"Plane ({1 + (z + x)})");
-                    child.transform.SetParent(transform);
-                    child.transform.localPosition = localPosition;
+                    GameObject plane = new GameObject($"Plane ({1 + (z + x)})");
+                    plane.transform.SetParent(transform);
+                    plane.transform.localPosition = localPosition;
                     
-                    PlaneMeshGenerator generator = child.AddComponent<PlaneMeshGenerator>();
+                    PlaneMeshGenerator generator = plane.AddComponent<PlaneMeshGenerator>();
                     generator.Size = _planeSize;
                     generator.HoveredColor = _hoverColor;
                     generator.SelectedColor = _selectedColor;
                     generator.GenerateMesh(_material);
                     generator.SetInteractable(true);
+
+                    plane.AddComponent<GridPlaneManipulator>();
                 }
             }
         }

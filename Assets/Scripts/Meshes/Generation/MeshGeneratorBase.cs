@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BWolf.MeshGeneration
+namespace BWolf.Meshes.Generation
 {
     public abstract class MeshGeneratorBase : MonoBehaviour
     {

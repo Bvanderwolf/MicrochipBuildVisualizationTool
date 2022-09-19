@@ -2,7 +2,7 @@ using BWolf.UserInteraction.Utility;
 using UnityEditor;
 using UnityEngine;
 
-namespace BWolf.MeshGeneration.Utility.Editor
+namespace BWolf.Meshes.Generation.Utility.Editor
 {
     [CustomPropertyDrawer(typeof(ClampZeroOne))]
     public class ClampZeroOnePropertyDrawer : PropertyDrawer

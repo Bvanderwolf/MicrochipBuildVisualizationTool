@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace BWolf.MeshGeneration
+namespace BWolf.Meshes.Generation
 {
     /// <summary>
     /// A custom editor class that adds a generation button to the default inspector.
