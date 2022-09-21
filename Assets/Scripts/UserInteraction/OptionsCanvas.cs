@@ -66,6 +66,7 @@ namespace BWolf.UserInteraction
             Button button = _options[optionName].button;
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(action);
+            button.onClick.AddListener(() => SetActive(false));
         }
 
         private void OnSelectionChanged()
@@ -76,8 +77,8 @@ namespace BWolf.UserInteraction
             {
                 Vector3 averagePosition = selection.Select(selected => selected.transform.position).Average();
                 Vector3 displayPosition = averagePosition + _offset;
-
-                transform.position = displayPosition;
+                
+                transform.localPosition = displayPosition;
             }
 
             // Determine whether we want the canvas to be active based

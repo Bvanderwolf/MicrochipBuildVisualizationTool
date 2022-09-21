@@ -12,6 +12,15 @@ namespace BWolf.Meshes.Generation
       /// </summary>
       [SerializeField]
       private Vector3 _size = Vector3.one;
+      
+      /// <summary>
+      /// The size of the plane, where x=width, y=length.
+      /// </summary>
+      public Vector3 Size
+      {
+         get => _size;
+         set => _size = value;
+      } 
 
       /// <summary>
       /// Returns the vertices for a cube.

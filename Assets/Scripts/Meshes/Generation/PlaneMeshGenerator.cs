@@ -1,5 +1,6 @@
 using BWolf.UserInteraction;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace BWolf.Meshes.Generation
 {
@@ -57,7 +58,7 @@ namespace BWolf.Meshes.Generation
         /// <summary>
         /// The initial color of the generated mesh.
         /// </summary>
-        private Color _color;
+        public Color InitialColor { get; private set; }
 
         protected override void Awake()
         {
@@ -103,7 +104,8 @@ namespace BWolf.Meshes.Generation
         /// </summary>
         protected override void OnGeneratedMesh()
         {
-            _color = _renderer.Value.material.color;
+            InitialColor = _renderer.Value.material.color;
+            _renderer.Value.shadowCastingMode = ShadowCastingMode.Off;
         }
         
         /// <summary>
@@ -139,7 +141,7 @@ namespace BWolf.Meshes.Generation
 
         private void ResetColor()
         {
-            _renderer.Value.material.color = _color;
+            _renderer.Value.material.color = InitialColor;
         }
     }
 }

@@ -55,7 +55,7 @@ namespace BWolf.UserInteraction
         [Header("Settings")]
         [SerializeField]
         private KeyCode _inclusiveSelectKey = KeyCode.LeftShift;
-        
+
         /// <summary>
         /// Determines how many pixels the initial mouse click needs
         /// to be from the dragged position to create a selection box.

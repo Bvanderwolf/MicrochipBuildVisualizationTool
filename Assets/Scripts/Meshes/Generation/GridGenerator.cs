@@ -39,6 +39,8 @@ namespace BWolf.Meshes.Generation
         [SerializeField]
         private Vector2 _planeSize = new Vector2(1, 1);
 
+        public event Action OnGenerate;
+        
         /// <summary>
         /// Ensures the sizes don't fall under an impossible value.
         /// </summary>
@@ -77,21 +79,28 @@ namespace BWolf.Meshes.Generation
                 {
                     localPosition.x = (x * _planeSize.x);
                     localPosition.z = (z * _planeSize.y);
-                    
-                    GameObject plane = new GameObject($"Plane ({1 + (z + x)})");
-                    plane.transform.SetParent(transform);
-                    plane.transform.localPosition = localPosition;
-                    
-                    PlaneMeshGenerator generator = plane.AddComponent<PlaneMeshGenerator>();
-                    generator.Size = _planeSize;
-                    generator.HoveredColor = _hoverColor;
-                    generator.SelectedColor = _selectedColor;
-                    generator.GenerateMesh(_material);
-                    generator.SetInteractable(true);
 
-                    plane.AddComponent<GridPlaneManipulator>();
+                    CreateGridPlane($"Plane ({1 + (z + x)})", localPosition);
                 }
             }
+            
+            OnGenerate?.Invoke();
+        }
+
+        private void CreateGridPlane(string objectName, Vector3 localPosition)
+        {
+            GameObject plane = new GameObject(objectName);
+            plane.transform.SetParent(transform);
+            plane.transform.localPosition = localPosition;
+                    
+            PlaneMeshGenerator generator = plane.AddComponent<PlaneMeshGenerator>();
+            generator.Size = _planeSize;
+            generator.HoveredColor = _hoverColor;
+            generator.SelectedColor = _selectedColor;
+            generator.GenerateMesh(_material);
+            generator.SetInteractable(true);
+
+            plane.AddComponent<GridPlaneManipulator>();
         }
     }
 }
