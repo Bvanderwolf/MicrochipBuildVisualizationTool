@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using BWolf.UserInteraction.Utility;
 using TMPro;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace BWolf.UserInteraction
@@ -50,6 +52,7 @@ namespace BWolf.UserInteraction
         private void Start()
         {
             SetActive(false);
+            SetOnClick(OnButtonClick);
         }
 
         public void AddOption(string optionName, Func<bool> condition = null)
@@ -61,12 +64,16 @@ namespace BWolf.UserInteraction
             _options.Add(optionName, new OptionButton{ button = button, condition = condition });
         }
 
+        public void SetOnClick(UnityAction action)
+        {
+            foreach (string option in _options.Keys)
+                SetOnClick(option, action);
+        }
+
         public void SetOnClick(string optionName, UnityAction action)
         {
             Button button = _options[optionName].button;
-            button.onClick.RemoveAllListeners();
             button.onClick.AddListener(action);
-            button.onClick.AddListener(() => SetActive(false));
         }
 
         private void OnSelectionChanged()
@@ -84,6 +91,12 @@ namespace BWolf.UserInteraction
             // Determine whether we want the canvas to be active based
             // on whether any object has been selected.
             SetActive(selectedAnyObject);
+        }
+
+        private void OnButtonClick()
+        {
+            SetActive(false);
+            _selector.ClearSelection();
         }
 
         private void SetActive(bool value)

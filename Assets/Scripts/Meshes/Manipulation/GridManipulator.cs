@@ -26,13 +26,13 @@ namespace BWolf.Meshes.Manipulation
         {
             _generator = GetComponent<GridGenerator>();
             _generator.OnGenerate += OnGridGenerated;
+            
+            _options.SetOnClick(OptionsCanvas.DEPOSE, OnDeposeButtonClick);
+            _options.SetOnClick(OptionsCanvas.ETCH, OnEtchButtonClick);
         }
 
         private void Start()
         {
-            _options.SetOnClick(OptionsCanvas.DEPOSE, OnDepose);
-            _options.SetOnClick(OptionsCanvas.ETCH, OnEtch);
-            
             OnGridGenerated();
         }
 
@@ -43,13 +43,13 @@ namespace BWolf.Meshes.Manipulation
                 planes[i].ExtrudeHeight = _extrudeHeight;
         }
 
-        private void OnEtch()
+        private void OnEtchButtonClick()
         {
             // TODO: decrement extrude level by one.
             GameObject[] selection = _selector.Selection;
         }
 
-        private void OnDepose()
+        private void OnDeposeButtonClick()
         {
             // The extrude level of selected game objects with grid
             // plane manipulator behaviour are incremented by one.

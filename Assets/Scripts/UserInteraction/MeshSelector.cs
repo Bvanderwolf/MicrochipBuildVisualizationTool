@@ -80,7 +80,7 @@ namespace BWolf.UserInteraction
         /// </summary>
         [SerializeField]
         private float _boxBorderThickness = 2f;
-        
+
         /// <summary>
         /// The current selection of game objects.
         /// </summary>
@@ -126,6 +126,9 @@ namespace BWolf.UserInteraction
         /// </summary>
         private void Update()
         {
+            if (EventSystem.current.IsPointerOverGameObject())
+                return;
+            
             Vector3 mousePosition = Input.mousePosition;
             
             // If the user pressed the left mouse button, set the first mouse position.
@@ -158,6 +161,26 @@ namespace BWolf.UserInteraction
             SelectionUtility.DrawRect(dragRect, _boxColor);
             SelectionUtility.DrawBorder(dragRect, _boxBorderThickness, _boxBorderColor);
         }
+        
+        /// <summary>
+        /// Clears the current selection selection of game objects, skipping game objects
+        /// given as exclusive.
+        /// </summary>
+        /// <param name="excludedGameObjects">Game objects to exclude.</param>
+        public void ClearSelection(params GameObject[] excludedGameObjects)
+        {
+            for (int i = _currentSelection.Count - 1; i >= 0; i--)
+            {
+                // Skip destroyed or exclusive game objects from being removed.
+                GameObject selectedGameObject = _currentSelection[i];
+                if (selectedGameObject == null || excludedGameObjects.Any(go => go == selectedGameObject))
+                    continue;
+
+                // Removed game objects have their IUserInteractable implementation method invoked.
+                selectedGameObject.GetComponent<IUserInteractable>()?.OnDeselect();
+                _currentSelection.RemoveAt(i);
+            }
+        }
 
         /// <summary>
         /// Called when the user has clicked the screen to select a game object.
@@ -165,9 +188,6 @@ namespace BWolf.UserInteraction
         /// <param name="mousePosition">The mouse position on screen.</param>
         private void OnClick(Vector3 mousePosition)
         {
-            if (IsSelectingOptionsCanvas())
-                return;
-            
             Ray ray = Camera.main.ScreenPointToRay(mousePosition);
             int previousCount = _currentSelection.Count;
 
@@ -178,7 +198,7 @@ namespace BWolf.UserInteraction
                     SelectionChanged?.Invoke();
                 return;
             }
-
+            
             GameObject clickedGameObject = hitInfo.transform.gameObject;
             GameObject previousGameObject = _currentSelection.FirstOrDefault();
 
@@ -237,26 +257,6 @@ namespace BWolf.UserInteraction
         }
 
         /// <summary>
-        /// Clears the current selection selection of game objects, skipping game objects
-        /// given as exclusive.
-        /// </summary>
-        /// <param name="excludedGameObjects">Game objects to exclude.</param>
-        private void ClearSelection(params GameObject[] excludedGameObjects)
-        {
-            for (int i = _currentSelection.Count - 1; i >= 0; i--)
-            {
-                // Skip destroyed or exclusive game objects from being removed.
-                GameObject selectedGameObject = _currentSelection[i];
-                if (selectedGameObject == null || excludedGameObjects.Any(go => go == selectedGameObject))
-                    continue;
-
-                // Removed game objects have their IUserInteractable implementation method invoked.
-                selectedGameObject.GetComponent<IUserInteractable>()?.OnDeselect();
-                _currentSelection.RemoveAt(i);
-            }
-        }
-
-        /// <summary>
         /// Called when the user has ended a drag selection to do a box cast
         /// to select game objects in the scene.
         /// </summary>
@@ -281,15 +281,5 @@ namespace BWolf.UserInteraction
 
         private bool IsSelectableCollider(Collider colliderToCheck) =>
             _meshCaster.condition == null || _meshCaster.condition.Invoke(colliderToCheck);
-
-        private bool IsSelectingOptionsCanvas()
-        {
-            GameObject selectedUIObject = EventSystem.current.currentSelectedGameObject;
-            
-            if (selectedUIObject == null)
-                return false;
-
-            return selectedUIObject.GetComponentInParent<OptionsCanvas>() != null;
-        }
     }
 }

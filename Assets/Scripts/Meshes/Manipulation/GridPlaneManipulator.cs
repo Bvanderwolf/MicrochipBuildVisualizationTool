@@ -39,7 +39,7 @@ namespace BWolf.Meshes.Manipulation
                 CreateExtrudeCube();
             else
                 Extrude();
-
+            
             _extrudeLevel++;
         }
 
