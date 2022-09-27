@@ -73,6 +73,7 @@ namespace BWolf.UserInteraction
         public void SetOnClick(string optionName, UnityAction action)
         {
             Button button = _options[optionName].button;
+            button.name = optionName;
             button.onClick.AddListener(action);
         }
 

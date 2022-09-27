@@ -1,5 +1,6 @@
 using System;
 using BWolf.Meshes.Generation;
+using BWolf.UserInteraction.Utility;
 using UnityEngine;
 
 namespace BWolf.Meshes.Manipulation
@@ -19,7 +20,9 @@ namespace BWolf.Meshes.Manipulation
             set => _extrudeHeight = value;
         }
 
-        private int _extrudeLevel;
+        public int ExtrudeLevel { get; private set; }
+
+        private Vector3 _initialPosition;
 
         private GameObject _cube;
 
@@ -33,14 +36,45 @@ namespace BWolf.Meshes.Manipulation
             _renderer = GetComponent<Renderer>();
         }
 
+        private void Start()
+        {
+            _initialPosition = transform.position;
+        }
+
         public void IncrementExtrudeLevel()
         {
-            if (_extrudeLevel == 0)
+            if (ExtrudeLevel == 0)
                 CreateExtrudeCube();
             else
-                Extrude();
+                Extrude(_extrudeHeight);
             
-            _extrudeLevel++;
+            ExtrudeLevel++;
+        }
+
+        public void DecrementExtrudeLevel()
+        {
+            if (ExtrudeLevel == 0)
+                return;
+            
+            if (ExtrudeLevel == 1)
+                DestroyExtrudeCube();
+            else
+                Extrude(-_extrudeHeight);
+
+            ExtrudeLevel--;
+        }
+
+        /// <summary>
+        /// Switches the parents of cube and plane before destroying the cube
+        /// And resetting the plane to its initial position.
+        /// </summary>
+        private void DestroyExtrudeCube()
+        {
+            transform.SetParent(_cube.transform.parent);
+            
+            Destroy(_cube);
+
+            transform.position = _initialPosition;
         }
 
         /// <summary>
@@ -49,7 +83,7 @@ namespace BWolf.Meshes.Manipulation
         private void CreateExtrudeCube()
         {
             Transform thisTransform = transform;
- 
+
             // Create a primitive cube with the same material as this grid plane.
             _cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             _cube.GetComponent<Renderer>().material = new Material(_renderer.material)
@@ -64,22 +98,22 @@ namespace BWolf.Meshes.Manipulation
             cubeTransform.position = cubePosition;
             cubeTransform.localScale = new Vector3(_plane.Size.x, _extrudeHeight, _plane.Size.y);
 
-            // Parent the plane to the cube and place it at its top.
-            thisTransform.SetParent(_cube.transform);
+            // Switch the plane and the cube's parents and place the plane at the top.
+            thisTransform.ReplaceParent(cubeTransform);
             Vector3 planePosition = thisTransform.position;
             planePosition.y += _extrudeHeight + 0.001f;
             thisTransform.position = planePosition;
         }
 
         /// <summary>
-        /// Extrudes the grid plane by increasing the vertical scale of the cube.
+        /// Extrudes the grid plane upwards by adding height to the vertical scale of the cube.
         /// </summary>
-        private void Extrude()
+        private void Extrude(float height)
         {
             Vector3 cubeLocalScale = _cube.transform.localScale;
             Vector3 cubePosition = _cube.transform.position;
-            cubeLocalScale.y += _extrudeHeight;
-            cubePosition.y += (_extrudeHeight * 0.5f);
+            cubeLocalScale.y += height;
+            cubePosition.y += (height * 0.5f);
             _cube.transform.localScale = cubeLocalScale;
             _cube.transform.position = cubePosition;
         }

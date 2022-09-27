@@ -45,8 +45,9 @@ namespace BWolf.Meshes.Manipulation
 
         private void OnEtchButtonClick()
         {
-            // TODO: decrement extrude level by one.
             GameObject[] selection = _selector.Selection;
+            for (int i = 0; i < selection.Length; i++)
+                selection[i].GetComponent<GridPlaneManipulator>()?.DecrementExtrudeLevel();
         }
 
         private void OnDeposeButtonClick()
